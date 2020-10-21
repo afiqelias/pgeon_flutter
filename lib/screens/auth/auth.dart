@@ -16,7 +16,7 @@ class _AuthState extends State<Auth> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  String username = 'puchong14';
+  String username = 'puchong1';
   String password = '123456789';
   String error = '';
 
@@ -51,10 +51,7 @@ class _AuthState extends State<Auth> {
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     print('state $state');
-                    if (state is AuthSuccess) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Menu()));
-                    } else if (state is AuthError) {
+                    if (state is AuthError) {
                       setState(() {
                         error = state.message;
                         loading = false;
@@ -62,10 +59,14 @@ class _AuthState extends State<Auth> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is AuthInitial) {
+                    if (state is Unauth) {
                       return buildAuth();
                     } else if (state is AuthLoading) {
                       return buildLoading();
+                    } else if (state is AuthSuccess) {
+                      print('auth success');
+                      print(state.user.toJson().toString());
+                      return buildAuth();
                     } else {
                       return buildAuth();
                     }
@@ -103,7 +104,7 @@ class _AuthState extends State<Auth> {
                         border: Border(
                             bottom: BorderSide(color: Colors.grey[100]))),
                     child: TextFormField(
-                      initialValue: 'puchong14',
+                      initialValue: 'puchong1',
                       validator: (val) =>
                           val.isEmpty ? 'Authname is required' : null,
                       onChanged: (val) {

@@ -7,14 +7,16 @@ import 'package:pgeon_flutter/screens/menu/menu.dart';
 class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final authBloc = context.bloc<AuthBloc>();
     print('auth wrapper');
-    return BlocListener(
-      listener: (context, state) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        print('WRAPPER STATE $state');
         if (state is AuthSuccess) {
-          return Auth();
-        } else {
+          print('masuk auth');
           return Menu();
+        } else {
+          print('masuk unauth');
+          return Auth();
         }
       },
     );

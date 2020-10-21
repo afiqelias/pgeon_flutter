@@ -5,7 +5,9 @@ abstract class AuthState {
   const AuthState();
 }
 
-class AuthInitial extends AuthState {}
+class Unauth extends AuthState {
+  const Unauth();
+}
 
 class AuthLoading extends AuthState {
   const AuthLoading();

@@ -1,16 +1,17 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pgeon_flutter/data/models/user.dart';
 import 'package:pgeon_flutter/data/user_repository.dart';
+import 'package:pgeon_flutter/helpers/pref_helper.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   final UserRepository _userRepository;
-  AuthBloc(this._userRepository) : super(AuthInitial());
+  AuthBloc(this._userRepository) : super(Unauth()) {
+    hydrate();
+  }
 
   @override
   Stream<AuthState> mapEventToState(
@@ -21,10 +22,17 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         yield (AuthLoading());
         final User user =
             await _userRepository.auth(event.username, event.password);
-        yield (AuthSuccess(user));
-      } on NetworkException {
-        yield (AuthError("Invalid username or password"));
+        if (await PrefHelper.storeCache("authUser", user.toJson().toString())) {
+          yield (AuthSuccess(user));
+        } else {
+          yield (AuthError("Error storing cache"));
+        }
+      } catch (e) {
+        yield (AuthError(e));
       }
+    }
+    if (event is Logout) {
+      yield (Unauth());
     }
   }
 
