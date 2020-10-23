@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:pgeon_flutter/data/delivery_order_repository.dart';
+import 'package:pgeon_flutter/data/repositories/delivery_order_repository.dart';
 import 'package:pgeon_flutter/data/models/delivery_order.dart';
 
 part 'delivery_order_event.dart';

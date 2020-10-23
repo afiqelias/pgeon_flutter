@@ -1,17 +1,19 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'models/user.dart';
+import 'package:pgeon_flutter/helpers/pref_helper.dart';
+import '../models/user.dart';
 import 'package:pgeon_flutter/global.dart';
 
 abstract class UserRepository {
   Future<User> auth(String username, String password);
+  Future<User> getAuthUser();
 }
 
 class UserRepositoryImp implements UserRepository {
   @override
   Future<User> auth(String username, String password) async {
     try {
-      print('url $LOGIN_URL');
-      print('USERNAME : $username, password : $password');
       Response response = await Dio()
           .post(LOGIN_URL, data: {'username': username, 'password': password});
       print(response.data['data']);
@@ -21,11 +23,20 @@ class UserRepositoryImp implements UserRepository {
       if (e is DioError) {
         throw (e.response.data['error']['message']);
       } else {
-        print('error : $e');
         throw ("error");
       }
     }
   }
-}
 
-class NetworkException implements Exception {}
+  @override
+  Future<User> getAuthUser() async {
+    var fromCache = await PrefHelper.getCache("authUser");
+    if (fromCache != null) {
+      Map json = jsonDecode(fromCache);
+      return User.fromJson(json);
+    }
+    return null;
+  }
+
+  
+}

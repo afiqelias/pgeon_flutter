@@ -9,9 +9,10 @@ class DeliveryOrderScreen extends StatefulWidget {
 }
 
 class _DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
+  DeliveryOrderBloc deliveryOrderBloc;
   @override
   Widget build(BuildContext context) {
-    final deliveryOrderBloc = context.bloc<DeliveryOrderBloc>();
+    deliveryOrderBloc = context.bloc<DeliveryOrderBloc>();
     deliveryOrderBloc.add(GetDeliveryOrderList("false"));
     return Container(
         child: BlocConsumer<DeliveryOrderBloc, DeliveryOrderState>(
@@ -39,11 +40,13 @@ class _DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
               child: ListTile(
                 leading: RichText(
                   text: TextSpan(
-                      text: '${deliveryOrderList[index].addr1 ?? ''} ${deliveryOrderList[index].addr2 ?? ''} ${deliveryOrderList[index].addr3 ?? ''} ${deliveryOrderList[index].addr1 ?? ''}',
+                      text:
+                          '${deliveryOrderList[index].addr1 ?? ''} ${deliveryOrderList[index].addr2 ?? ''} ${deliveryOrderList[index].addr3 ?? ''} ${deliveryOrderList[index].addr1 ?? ''}',
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
                       children: [
                         TextSpan(
                           text: '\nTest',
@@ -65,6 +68,12 @@ class _DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    deliveryOrderBloc.close();
+    super.dispose();
   }
 
   Widget buildLoading() {

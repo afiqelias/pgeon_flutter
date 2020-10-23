@@ -10,22 +10,22 @@ User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     username: json['username'] as String,
     fullName: json['fullName'] as String,
-    sessionToken: json['sessionToken'] as String,
-    isDriver: json['isDriver'] as bool,
-    isHubHero: json['isHubHero'] as bool,
-    isLineHaulDriver: json['isLineHaulDriver'] as bool,
-    staffId: json['staffId'] as int,
-    driverId: json['driverId'] as int,
+    sessionToken: json['session_token'] as String,
+    isDriver: json['is_driver'] as bool ?? false,
+    isHubHero: json['is_hub_hero'] as bool ?? false,
+    isLineHaulDriver: json['is_linehaul_driver'] as bool ?? false,
+    staffId: json['staff_id'] as int ?? 0,
+    driverId: json['driver_id'] as int ?? 0,
   );
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'username': instance.username,
       'fullName': instance.fullName,
-      'sessionToken': instance.sessionToken,
-      'isDriver': instance.isDriver,
-      'isHubHero': instance.isHubHero,
-      'isLineHaulDriver': instance.isLineHaulDriver,
-      'staffId': instance.staffId,
-      'driverId': instance.driverId,
+      'session_token': instance.sessionToken,
+      'is_driver': instance.isDriver,
+      'is_hub_hero': instance.isHubHero,
+      'is_linehaul_driver': instance.isLineHaulDriver,
+      'staff_id': instance.staffId,
+      'driver_id': instance.driverId,
     };

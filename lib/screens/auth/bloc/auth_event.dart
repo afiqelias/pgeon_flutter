@@ -9,6 +9,10 @@ class Authenticate extends AuthEvent {
   Authenticate(this.username,this.password);
 }
 
+class AppStarted extends AuthEvent {
+  AppStarted();
+}
+
 class Logout extends AuthEvent {
   Logout();
 }

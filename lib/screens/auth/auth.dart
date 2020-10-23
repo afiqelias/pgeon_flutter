@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pgeon_flutter/components/clipper.dart';
 import 'package:pgeon_flutter/screens/auth/bloc/auth_bloc.dart';
-import 'package:pgeon_flutter/screens/menu/menu.dart';
 
 class Auth extends StatefulWidget {
   final Function toggleView;
@@ -13,10 +12,20 @@ class Auth extends StatefulWidget {
 }
 
 class _AuthState extends State<Auth> {
+
+  AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = context.bloc<AuthBloc>();
+    authBloc.add(AppStarted());
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-  String username = 'puchong1';
+  String username = 'puchong14';
   String password = '123456789';
   String error = '';
 
@@ -59,7 +68,7 @@ class _AuthState extends State<Auth> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is Unauth) {
+                    if (state is NotAuthenticated) {
                       return buildAuth();
                     } else if (state is AuthLoading) {
                       return buildLoading();
@@ -190,7 +199,6 @@ class _AuthState extends State<Auth> {
   }
 
   void authenticate(BuildContext context, String username, password) {
-    final authBloc = context.bloc<AuthBloc>();
     authBloc.add(Authenticate(username, password));
   }
 
